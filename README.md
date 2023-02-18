@@ -9,3 +9,6 @@ Is an android app that shows simple List of top 250 movies got from [IMDb-API](h
 - [MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?gclsrc=ds&gclsrc=ds) as an architecture pattern.
 - [Repository Pattern]() isolates the data sources from the rest of the app and provides a clean API for data access to the rest of the app.
 - [Picasso](https://square.github.io/picasso/) A powerful image downloading and caching library for Android.
+# Try it
+[v1.0](https://square.github.io/picasso/)
+
