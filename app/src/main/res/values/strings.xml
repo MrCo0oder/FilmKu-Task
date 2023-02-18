@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FilmKu</string>
+    <string name="sorted_by">Sort By</string>
+    <string name="rate">Rate</string>
+    <string name="year">Year</string>
+    <string name="todo">TODO</string>
+</resources>
