@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.filmku.R
 import com.example.filmku.adapter.MoviesRecyclerAdapter
 import com.example.filmku.databinding.ActivityMainBinding
 import com.example.filmku.pojo.MovieModel
-import com.example.filmku.repository.Status
+import com.example.filmku.utils.Status
 import com.example.filmku.viewmodels.MoviesViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,61 +28,47 @@ class MainActivity : AppCompatActivity() {
     private lateinit var errorMsg: Status
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+        binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        Thread.sleep(3000)
+        setContentView(binding.root)
         initRV()
         loadData()
-        binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        setupChipGroup()
+        binding.swipe.setOnRefreshListener {
             loadData()
             binding.swipe.isRefreshing = false
-        })
-        binding.floatingActionButton.setOnClickListener {
-            (binding.moviesRv.layoutManager as LinearLayoutManager).scrollToPosition(0)
         }
-        binding.yearButton.setOnClickListener {
+
+
+    }
+
+    private fun setupChipGroup() {
+        binding.chipGroup.check(R.id.year_chip)
+        binding.yearChip.setOnClickListener {
             topMoviesList = topMoviesList.sortedByDescending { t -> t.year }
             rvAdapter.setData(topMoviesList)
-            binding.yearButton.isEnabled = false
-            binding.rateButton.isEnabled = true
-            binding.yearButton.setTextColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.toggle_color
-                )
-            )
-            binding.rateButton.setTextColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.black
-                )
-            )
+            (binding.moviesRv.layoutManager as LinearLayoutManager).scrollToPosition(0)
         }
-        binding.rateButton.setOnClickListener {
+
+        binding.rateChip.setOnClickListener {
             topMoviesList = topMoviesList.sortedByDescending { t -> t.imDbRating }
             rvAdapter.setData(topMoviesList)
-            binding.yearButton.isEnabled = true
-            binding.rateButton.isEnabled = false
-            binding.rateButton.setTextColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.toggle_color
-                )
-            )
-            binding.yearButton.setTextColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.black
-                )
-            )
+            (binding.moviesRv.layoutManager as LinearLayoutManager).scrollToPosition(0)
+        }
+        binding.nameChip.setOnClickListener {
+            topMoviesList = topMoviesList.sortedBy { t -> t.title }
+            rvAdapter.setData(topMoviesList)
+            (binding.moviesRv.layoutManager as LinearLayoutManager).scrollToPosition(0)
         }
     }
 
-    private fun showSnack(status: Status) {
+    private fun showSnack(status: Status, errorMessage: String) {
         val snack: Snackbar =
-            Snackbar.make(binding.snackBar, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.snackBar, errorMessage, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(this, R.color.toggle_color))
-                .setTextColor(Color.BLACK)
-                .setAction("retry") { loadData() }
+                .setTextColor(Color.BLACK).setAction("retry") { loadData() }
                 .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
         when (status) {
             Status.SUCCESS -> {
@@ -107,25 +92,32 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         viewModel.getTopMovies()
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState.observe(this) {
             errorMsg = it.status
-            showSnack(errorMsg)
-        })
-        viewModel.response.observe(this@MainActivity, Observer {
+            showSnack(errorMsg, it.msg)
+        }
+        viewModel.response.observe(this@MainActivity) {
 
             if (it.errorMessage.isNotEmpty()) {
-                errorMsg = Status.FAiLD
-                showSnack(errorMsg)
+                errorMsg = Status.FAILED
+                showSnack(errorMsg, it.errorMessage)
             }
-            if (!binding.yearButton.isEnabled) {
-                topMoviesList = it.items.sortedByDescending { t -> t.year }
-                rvAdapter.setData(topMoviesList)
-            } else {
-                topMoviesList = it.items.sortedByDescending { t -> t.imDbRating }
-                rvAdapter.setData(topMoviesList)
+            when (binding.chipGroup.checkedChipId) {
+                R.id.rate_chip -> {
+                    topMoviesList = it.items.sortedByDescending { t -> t.imDbRating }
+                    rvAdapter.setData(topMoviesList)
+                }
+                R.id.name_chip -> {
+                    topMoviesList = it.items.sortedBy { t -> t.title }
+                    rvAdapter.setData(topMoviesList)
+                }
+                else -> {
+                    topMoviesList = it.items.sortedByDescending { t -> t.year }
+                    rvAdapter.setData(topMoviesList)
+                }
             }
 
-        })
+        }
     }
 
     private fun initRV() {
@@ -133,7 +125,6 @@ class MainActivity : AppCompatActivity() {
         topMoviesList = ArrayList()
         binding.moviesRv.layoutManager =
             LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-        binding.moviesRv.setHasFixedSize(true)
         binding.moviesRv.setHasFixedSize(true)
         rvAdapter = MoviesRecyclerAdapter()
         binding.moviesRv.adapter = rvAdapter

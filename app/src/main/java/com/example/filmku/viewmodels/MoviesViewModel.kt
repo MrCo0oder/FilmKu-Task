@@ -1,13 +1,12 @@
 package com.example.filmku.viewmodels
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.filmku.pojo.ResponseModel
-import com.example.filmku.repository.NetworkState
 import com.example.filmku.repository.RepositoryImple
+import com.example.filmku.utils.NetworkState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -26,7 +25,6 @@ class MoviesViewModel @Inject constructor(
     val response: LiveData<ResponseModel>
         get() = _response
 
-    @SuppressLint("CheckResult")
     fun getTopMovies() {
         _networkState.postValue(NetworkState.LOADING)
         try {
@@ -37,17 +35,13 @@ class MoviesViewModel @Inject constructor(
                         _networkState.postValue(NetworkState.LOADED)
                     }, {
                         _networkState.postValue(NetworkState.ERROR)
-                        Log.e("TAG", "getTopMoviesError: $it")
+                        Log.e("MoviesViewModel", "TopMoviesError--->>> $it")
                     })
             )
         } catch (e: Exception) {
             _networkState.postValue(NetworkState.ERROR)
-            Log.e("TAG", "getTopMoviesError: ${e.message}")
+            Log.e("MoviesViewModel", "GetTopMoviesException--->>> ${e.message}")
         }
-    }
-
-    fun isEmptyError(): Boolean {
-        return _response.value?.errorMessage?.isEmpty() ?: true
     }
 
     override fun onCleared() {

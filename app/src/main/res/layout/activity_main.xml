@@ -33,6 +33,7 @@
                 android:id="@+id/movies_rv"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,9 +43,9 @@
             <TextView
                 android:id="@+id/app_name"
                 style="@style/filmku"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/merriweather_bold"
                 android:gravity="center"
                 android:text="@string/app_name"
@@ -65,90 +66,59 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menuImageView" />
+                app:layout_constraintTop_toBottomOf="@+id/app_name" />
 
 
-            <ImageButton
-                android:id="@+id/menuImageView"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="#F9F9FA"
-                android:backgroundTintMode="screen"
-                android:checkable="false"
-                android:contentDescription="menu button"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:src="@drawable/ic_menu"
-                app:layout_constraintBottom_toBottomOf="@+id/app_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/app_name"
-                tools:ignore="HardcodedText,OnClick,RedundantDescriptionCheck,ImageContrastCheck" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                app:chipSpacing="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/exploreTV"
-                app:layout_constraintEnd_toEndOf="@+id/app_name"
-                app:layout_constraintStart_toStartOf="@+id/app_name"
-                app:layout_constraintTop_toTopOf="@+id/exploreTV">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/exploreTV"
+                app:layout_constraintTop_toTopOf="@+id/exploreTV"
+                app:selectionRequired="true"
+                app:singleLine="false"
+                app:singleSelection="true">
 
-                <Button
-                    android:id="@+id/year_button"
-                    style="@style/Widget.Material3.Button.TextButton"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/year_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:enabled="false"
-                    android:gravity="center"
-                    android:text="@string/year"
-                    android:textAlignment="center"
-                    android:textColor="@color/toggle_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:ignore="TextContrastCheck" />
+                    android:elevation="2dp"
+                    android:text="@string/year" />
 
-                <Button
-                    android:id="@+id/rate_button"
-                    style="@style/Widget.Material3.Button.TextButton"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/rate_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="6dp"
-                    android:text="@string/rate"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:elevation="2dp"
+                    android:text="@string/rate" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/name_chip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:text="@string/name" />
+            </com.google.android.material.chip.ChipGroup>
 
             <ProgressBar
                 android:id="@+id/progressBar2"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:indeterminateOnly="true"
                 android:indeterminateTint="#673AB7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:clickable="true"
-                android:contentDescription="@string/todo"
-                android:focusable="true"
-                app:backgroundTint="@color/toggle_color"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_top"
-                tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/snackBar"
@@ -156,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
 

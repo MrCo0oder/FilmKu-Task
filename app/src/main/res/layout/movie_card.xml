@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,10 +33,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,24 +44,13 @@
                 <ImageView
                     android:id="@+id/movie_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp"
-                    android:contentDescription=""
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/movie_image"
                     android:scaleType="centerCrop"
+                    app:image="@{listItem.image}"
                     app:srcCompat="@drawable/ic_placeholder" />
             </androidx.cardview.widget.CardView>
 
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:indeterminateBehavior="cycle"
-                android:indeterminateTint="@color/purple_200"
-                app:layout_constraintBottom_toBottomOf="@+id/card"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/card"
-                app:layout_constraintTop_toTopOf="@+id/card" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -74,10 +64,9 @@
                 <TextView
                     android:id="@+id/title_tv"
                     style="@style/scary_story"
-                    android:layout_width="109dp"
-                    android:layout_height="80dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:gravity="start|top"
@@ -87,7 +76,8 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/year_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,7 +90,8 @@
                     android:src="@drawable/ic_star"
                     app:layout_constraintBottom_toBottomOf="@+id/rate_tv"
                     app:layout_constraintEnd_toStartOf="@+id/rate_tv"
-                    app:layout_constraintTop_toTopOf="@+id/rate_tv" />
+                    app:layout_constraintTop_toTopOf="@+id/rate_tv"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
 
                 <TextView
                     android:id="@+id/rate_tv"
@@ -112,46 +103,49 @@
                     android:text="@{String.format(`%s /10 IMDb`,listItem.imDbRating)}"
                     android:textColor="#9C9C9C"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="@+id/title_tv" />
 
                 <TextView
                     android:id="@+id/year_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+
                     android:background="@drawable/text_bg"
                     android:gravity="center"
-
                     android:paddingStart="12dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="4dp"
                     android:text="@{listItem.year}"
                     android:textColor="#88A4E8"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/title_tv"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="@+id/title_tv" />
 
                 <ImageView
-                    android:id="@+id/duration_iv"
+                    android:id="@+id/rank_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="@+id/duration_tv"
-                    app:layout_constraintStart_toEndOf="@+id/title_tv"
-                    app:layout_constraintTop_toTopOf="@+id/duration_tv"
-                    app:srcCompat="@drawable/ic_duration" />
+                    app:layout_constraintBottom_toBottomOf="@+id/rank_tv"
+                    app:layout_constraintStart_toEndOf="@+id/year_tv"
+                    app:layout_constraintTop_toTopOf="@+id/rank_tv"
+                    app:srcCompat="@drawable/ic_rank"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/duration_tv"
+                    android:id="@+id/rank_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="1h 47m"
+                    android:text="@{listItem.rank}"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/title_tv"
-                    app:layout_constraintStart_toEndOf="@+id/duration_iv" />
+                    app:layout_constraintBottom_toBottomOf="@+id/year_tv"
+                    app:layout_constraintStart_toEndOf="@+id/rank_iv"
+                    app:layout_constraintTop_toTopOf="@+id/year_tv"
+                    tools:ignore="HardcodedText" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

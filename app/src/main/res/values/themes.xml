@@ -14,7 +14,11 @@
 
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground2</item>
+        <item name="postSplashScreenTheme">@style/Theme.FilmKu</item>
+    </style>
     <style name="scary_story">
 
         <item name="android:textSize">

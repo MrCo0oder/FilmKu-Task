@@ -4,4 +4,6 @@
     <string name="rate">Rate</string>
     <string name="year">Year</string>
     <string name="todo">TODO</string>
+    <string name="movie_image">movie image</string>
+    <string name="name">Name</string>
 </resources>

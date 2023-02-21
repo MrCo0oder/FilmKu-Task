@@ -1,4 +1,4 @@
-package com.example.filmku.repository
+package com.example.filmku.utils
 
 class NetworkState(val status: Status, val msg: String) {
     companion object {
@@ -9,13 +9,11 @@ class NetworkState(val status: Status, val msg: String) {
         init {
             LOADED = NetworkState(Status.SUCCESS, "Success")
             LOADING = NetworkState(Status.RUNNING, "Running")
-            ERROR = NetworkState(Status.FAiLD, "something went wrong!")
+            ERROR = NetworkState(Status.FAILED, "Something went wrong!")
         }
     }
 }
 
 enum class Status {
-    RUNNING,
-    SUCCESS,
-    FAiLD
+    RUNNING, SUCCESS, FAILED
 }
