@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmku.R
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
-        Thread.sleep(3000)
         setContentView(binding.root)
         initRV()
         loadData()
@@ -40,8 +38,6 @@ class MainActivity : AppCompatActivity() {
             loadData()
             binding.swipe.isRefreshing = false
         }
-
-
     }
 
     private fun setupChipGroup() {
